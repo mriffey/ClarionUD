@@ -34,6 +34,14 @@
     #ENABLE(~%CLSkelAppDisable)
       #BOXED(' Application Generation Options ')
         #DISPLAY('')
+        #PROMPT('Generate global object?',CHECK),%gGenGlobalObject,DEFAULT(1),AT(10)
+        #!ENABLE(%gGenGlobalObject)
+        #!ENDENABLE     
+        #DISPLAY('')
+        #PROMPT('Generate procedure-level objects?',CHECK),%gGenProcedureLevelObject,DEFAULT(1),AT(10)
+        #!ENABLE(%gGenProcedureLevelObject)
+        #!ENDENABLE             
+        #DISPLAY('')
         #PROMPT('Create global information procedure? ',CHECK),%gDumpTpl,DEFAULT(0),AT(10)
         #ENABLE(%gDumpTpl)
           #PROMPT('Dump global information? '          ,CHECK),%zDumpTpl,DEFAULT(0),AT(25)
@@ -86,7 +94,8 @@
 #SHEET,AT(,,288),HSCROLL
 #TAB('General')
   #DISPLAY
-  #PROMPT('Global Class:',@S40),%CLSkelClass,AT(90,,95,10),REQ,DEFAULT('UD')
+  #PROMPT('Global object:',@S40),%CLSkelGlobalClass,AT(90,,95,10),REQ,DEFAULT('UD')
+  #PROMPT('Procedure object:',@S40),%CLSkelProcedureClass,AT(90,,95,10),REQ,DEFAULT('UDP')  
   #PROMPT('This is part of a Multi-DLL program',CHECK),%CLSkelMultiDLL,AT(90),DEFAULT(0)
   #ENABLE(%CLSkelMultiDLL=1),CLEAR
     #PROMPT('Declaration:',DROP('Declared in another App[0]|Declared in this app[1]')),%CLSkelMultiDLLData,DEFAULT(0),AT(90,,95,10)
@@ -116,8 +125,8 @@
 #!-------------------------------------------------------------------------
 #ATSTART
   #DECLARE(%CLSkelDataExternal)
-  #DECLARE(%CLSkelClassProfile)
-  #SET(%CLSkelClassProfile,%CLSkelClass & 'Profile')
+  #DECLARE(%CLSkelProcedureClassProfile)
+  #SET(%CLSkelProcedureClassProfile,%CLSkelProcedureClass & 'Profile')
   #IF(%CLSkelMultiDLL=1 AND %CLSkelMultiDLLData=0)
     #SET(%CLSkelDataExternal,',EXTERNAL,DLL(dll_mode)')
   #ENDIF
@@ -209,7 +218,9 @@ AppName                             STRING(100)
 Modified                            STRING(26)
                             END
  #ENDIF 
-#INSERT(%DeclareClass,%CLSkelDataExternal)  #! NR restored so file manager embeds will work
+#IF(%gGenGlobalObject=1)
+#INSERT(%DeclareGlobalClass,%CLSkelDataExternal) 
+#ENDIF 
 #ENDAT
 
 #AT(%DLLExportList),WHERE(%CLSkelMultiDLL=1 AND %CLSkelMultiDLLData=1 AND ~%CLSkelAppDisable)
@@ -228,6 +239,7 @@ Modified                            STRING(26)
   udb_Settings.ASCIIFileName =  '%CLLogFileName'
   udb_Settings.DebugNoCR     =  %DoNotSplitLines
   udb_Settings.LineWrap      =  %LineWrap
+  %CLSkelGlobalClass.INIT('global',udb_settings)
 #ENDIF
   #IF(%gDumpTpl AND %zDumpTpl)                                                #! Dump GLOBAL information - end
 DebugABCGlobalInformation_%Application()      #<! Dump GLOBAL information
@@ -258,55 +270,58 @@ DebugABCGlobalVariables_%Application PROCEDURE() #<! DEBUG Prototype
  
 !BOE: DEBUG Global
 DebugABCGlobalInformation_%Application PROCEDURE()
-
-#!INSERT(%DeclareClass)
+#IF(~%gGenProcedureLevelObject)
+#INSERT(%DeclareClass)
+#ENDIF
                      
   CODE
   
-  %CLSkelClass.Init('DebugABCGlobalInformation_%Application',udb_Settings)
+  %CLSkelProcedureClass.Init('DebugABCGlobalInformation_%Application',udb_Settings)
     
   
  #IF(~%CLSkelAppDisable)
+ #IF(~%gGenProcedureLevelObject)
   #IF(%gDumpTpl)
-  %CLSkelClass.Debug('----------------> APPLICATION INFORMATION')
-  %CLSkelClass.Debug('Information Generated on: '& FORMAT(TODAY(),@D010) & ' - ' & FORMAT(CLOCK(),@T04))
+  %CLSkelProcedureClass.Debug('----------------> APPLICATION INFORMATION')
+  %CLSkelProcedureClass.Debug('Information Generated on: '& FORMAT(TODAY(),@D010) & ' - ' & FORMAT(CLOCK(),@T04))
     #IF(%ProgramExtension = 'EXE')
-  %CLSkelClass.Debug('CW Version: Lib ' & system{prop:libversion} & ' Exe ' & system{prop:exeversion} & '')
+  %CLSkelProcedureClass.Debug('CW Version: Lib ' & system{prop:libversion} & ' Exe ' & system{prop:exeversion} & '')
     #ENDIF
-  %CLSkelClass.Debug('Application Name: %Application ')
+  %CLSkelProcedureClass.Debug('Application Name: %Application ')
     #IF (%ApplicationDebug = %True)
-  %CLSkelClass.Debug('Compiled in DEBUG mode.')
+  %CLSkelProcedureClass.Debug('Compiled in DEBUG mode.')
     #ENDIF
     #IF (%ApplicationLocalLibrary = %TRUE)
-  %CLSkelClass.Debug('Compiled with LOCAL option.')
+  %CLSkelProcedureClass.Debug('Compiled with LOCAL option.')
     #ENDIF
     #IF (%Target32 = %True)
-  %CLSkelClass.Debug('Application is 32 bits.')
+  %CLSkelProcedureClass.Debug('Application is 32 bits.')
     #ELSE
-  %CLSkelClass.Debug('Application is 16 bits.')
+  %CLSkelProcedureClass.Debug('Application is 16 bits.')
     #ENDIF
-  %CLSkelClass.Debug('First procedure: %FirstProcedure')
-  %CLSkelClass.Debug('Program Extension: %ProgramExtension')
-  %CLSkelClass.Debug('Dictionary Name: %DictionaryFile')
-  %CLSkelClass.Debug('Installation Path: ' & LONGPATH(PATH()))
+  %CLSkelProcedureClass.Debug('First procedure: %FirstProcedure')
+  %CLSkelProcedureClass.Debug('Program Extension: %ProgramExtension')
+  %CLSkelProcedureClass.Debug('Dictionary Name: %DictionaryFile')
+  %CLSkelProcedureClass.Debug('Installation Path: ' & LONGPATH(PATH()))
     #IF(ITEMS(%ApplicationTemplate))
-  %CLSkelClass.Debug('----------------> GLOBAL TEMPLATES')
+  %CLSkelProcedureClass.Debug('----------------> GLOBAL TEMPLATES')
       #FOR(%ApplicationTemplate)
-  %CLSkelClass.Debug('Global Templates: %ApplicationTemplate ')
+  %CLSkelProcedureClass.Debug('Global Templates: %ApplicationTemplate ')
       #ENDFOR
     #ENDIF
-  %CLSkelClass.Debug('----------------> ')
+  %CLSkelProcedureClass.Debug('----------------> ')
   #ENDIF
+ #ENDIF 
  #ENDIF
   RETURN
 
 DebugABCGlobalVariables_%Application PROCEDURE()
 
-#!MR20171229INSERT(%DeclareClass)
+#INSERT(%DeclareClass)
 
   CODE
   
-  !MR20171229%CLSkelClass.Init('DebugABCGlobalVariables_%Application',udb_Settings)
+  %CLSkelProcedureClass.Init('DebugABCGlobalVariables_%Application',udb_Settings)
   
  #IF(~%CLSkelAppDisable)
   #IF(%gDumpVar)
@@ -315,7 +330,7 @@ DebugABCGlobalVariables_%Application PROCEDURE()
     #DECLARE (%PrefixStart)
     #DECLARE (%PrefixEnd)
     #DECLARE (%DataStmt)
-  %CLSkelClass.Debug('----------------> GLOBAL VARIABLES')
+  %CLSkelProcedureClass.Debug('----------------> GLOBAL VARIABLES')
     #FOR(%GlobalData)
       #SET(%DataStmt,QUOTE(%GlobalDataStatement))
       #IF (INSTRING('QUEUE',%GlobalDataStatement,1,1) OR INSTRING('GROUP',%GlobalDataStatement,1,1))
@@ -327,27 +342,27 @@ DebugABCGlobalVariables_%Application PROCEDURE()
             #SET(%Prefix,'')
           #ENDIF
         #ENDIF
-  %CLSkelClass.Debug('Only the active record of a group or queue is displayed.')
-#!  %CLSkelClass.Debug('Global data: %[23]GlobalData %[17]DataStmt')  ! & ' Records: ' & RECORDS(%GlobalData))
-  %CLSkelClass.Debug('Global data: %[23]GlobalData %[17]DataStmt')
+  %CLSkelProcedureClass.Debug('Only the active record of a group or queue is displayed.')
+#!  %CLSkelProcedureClass.Debug('Global data: %[23]GlobalData %[17]DataStmt')  ! & ' Records: ' & RECORDS(%GlobalData))
+  %CLSkelProcedureClass.Debug('Global data: %[23]GlobalData %[17]DataStmt')
       #ELSE
         #IF (INSTRING('END',%GlobalDataStatement,1,1) OR INSTRING('FILE',%GlobalDataStatement,1,1))
           #SET (%Prefix,'')
-  %CLSkelClass.Debug('Global Data: %[23]GlobalData %[17]DataStmt')
+  %CLSkelProcedureClass.Debug('Global Data: %[23]GlobalData %[17]DataStmt')
         #ELSE
 	  #! RA.2014.04.19 - No ARRAYS are allowed or supported. 
 	  #IF(INSTRING(',DIM',UPPER(%DataStmt))>0)
-  %CLSkelClass.Debug('Global Data: %[23]GlobalData is an ARRAY variable and NOT SUPPORTED.')
+  %CLSkelProcedureClass.Debug('Global Data: %[23]GlobalData is an ARRAY variable and NOT SUPPORTED.')
 	  #ELSIF(INSTRING('&',UPPER(%DataStmt))>0) #! RA.2014.04.27 - Reference variable
-  %CLSkelClass.Debug('Global Data: %[23]GlobalData is a REFERENCE variable and NOT SUPPORTED.')          
+  %CLSkelProcedureClass.Debug('Global Data: %[23]GlobalData is a REFERENCE variable and NOT SUPPORTED.')          
           #ELSE  
-  %CLSkelClass.Debug('Global Data: %[23]GlobalData %[17]DataStmt Value: ''' & CLIP(%Prefix%GlobalData) & '''')
+  %CLSkelProcedureClass.Debug('Global Data: %[23]GlobalData %[17]DataStmt Value: ''' & CLIP(%Prefix%GlobalData) & '''')
           #ENDIF
 	  #! RA.2014.04.19 - No ARRAYS are allowed or supported. 
         #ENDIF
       #ENDIF
     #ENDFOR
-  %CLSkelClass.Debug('---------------->')
+  %CLSkelProcedureClass.Debug('---------------->')
   #ENDIF
  #ENDIF
   RETURN
@@ -356,19 +371,27 @@ DebugABCGlobalVariables_%Application PROCEDURE()
 #ENDAT
 
 #AT(%LocalDataAfterClasses),WHERE(%ProcStillNeedsUltDB()),PRIORITY(100),DESCRIPTION('UltimateDebugger Object')
-#!MR20171229INSERT(%DeclareClass)
+#IF(~%gGenProcedureLevelObject)
+#INSERT(%DeclareClass)
+#ENDIF
 #ENDAT
 !
 #AT(%DataSection),PRIORITY(100),WHERE(%ProcStillNeedsUltDB()),PRIORITY(100),DESCRIPTION('UltimateDebugger Object')
-#!MR20171229INSERT(%DeclareClass)
+#IF(~%gGenProcedureLevelObject)
+#INSERT(%DeclareClass)
+#ENDIF
 #ENDAT
 !
 #AT(%DataSectionBeforeWindow),WHERE(%ProcStillNeedsUltDB()),PRIORITY(100),DESCRIPTION('UltimateDebugger Object')
-#!MR20171229INSERT(%DeclareClass)
+#IF(~%gGenProcedureLevelObject)
+#INSERT(%DeclareClass)
+#ENDIF
 #ENDAT
 !
 #AT(%DeclarationSection),WHERE(%ProcStillNeedsUltDB()),PRIORITY(100),DESCRIPTION('UltimateDebugger Object')
-#!MR20171229INSERT(%DeclareClass)
+#IF(~%gGenProcedureLevelObject)
+#INSERT(%DeclareClass)
+#ENDIF
 #ENDAT
 
 
@@ -486,6 +509,15 @@ END
 #!*****************************************************************************
 #GROUP(%DeclareClass,%ExternalAttr='')  
 #IF(~%CLSkelAppDisable)
-%[20]CLSkelClass UltimateDebug%ExternalAttr
+#IF(~%gGenProcedureLevelObject)
+%[20]CLSkelProcedureClass UltimateDebug%ExternalAttr
+#ENDIF
+#ENDIF
+#!*****************************************************************************
+#GROUP(%DeclareGlobalClass,%ExternalAttr='')  
+#IF(~%CLSkelAppDisable)
+#IF(%gGenGlobalObject = 1)
+%[20]CLSkelGlobalClass UltimateDebug%ExternalAttr
+#ENDIF
 #ENDIF
 #!*****************************************************************************

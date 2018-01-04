@@ -933,15 +933,15 @@ UD_TRACE EQUATE(0)  #<! Ultimate Debug TRACE is OFF
 #AT(%ProcessedCode),PRIORITY(0005)
  #IF(%TraceCode AND ~%CLSkelAppDisable)
 ! === %ProcedureTemplate ===
-  %CLSkelClass.DebugEntry('%Application (%Module): %Procedure (%ProcedureTemplate)') #<! Ultimate Debug ENTRY %ProcedureTemplate
+  %CLSkelGlobalClass.DebugEntry('%Application (%Module): %Procedure (%ProcedureTemplate)') #<! Ultimate Debug ENTRY %ProcedureTemplate
  #ENDIF
  #IF(%TraceCode AND ~%CLSkelAppDisable AND %ShowLocalTemplates)
   #IF(ITEMS(%ActiveTemplate))
-  %CLSkelClass.DebugLevel('----------------> LOCAL TEMPLATES')
+  %CLSkelGlobalClass.DebugLevel('----------------> LOCAL TEMPLATES')
    #FOR(%ActiveTemplate)
-  %CLSkelClass.DebugLevel('Active Templates: %[18]ActiveTemplateType %ActiveTemplate ')
+  %CLSkelGlobalClass.DebugLevel('Active Templates: %[18]ActiveTemplateType %ActiveTemplate ')
    #ENDFOR
-  %CLSkelClass.DebugLevel('---------------->')
+  %CLSkelGlobalClass.DebugLevel('---------------->')
   #ENDIF
 ! === %ProcedureTemplate ===
  #ENDIF
@@ -950,7 +950,7 @@ UD_TRACE EQUATE(0)  #<! Ultimate Debug TRACE is OFF
 #AT(%ProcessedCode),PRIORITY(9995)
  #IF(%TraceCode AND ~%CLSkelAppDisable)
 ! === %ProcedureTemplate ===
-  %CLSkelClass.DebugExit('%Application (%Module): %Procedure (%ProcedureTemplate)') #<! Ultimate Debug EXITS %ProcedureTemplate
+  %CLSkelGlobalClass.DebugExit('%Application (%Module): %Procedure (%ProcedureTemplate)') #<! Ultimate Debug EXITS %ProcedureTemplate
 ! === %ProcedureTemplate ===
  #ENDIF
 #ENDAT
@@ -965,15 +965,15 @@ UD_TRACE EQUATE(0)  #<! Ultimate Debug TRACE is OFF
 #AT(%WindowManagerMethodCodeSection,'Init','(),BYTE'),PRIORITY(0005)
  #IF(%TraceCode AND ~%CLSkelAppDisable)
 ! === %ProcedureTemplate ===
-%CLSkelClass.DebugEntry('%Application (%Module): %Procedure (%ProcedureTemplate)') #<! Ultimate Debug ENTRY %ProcedureTemplate
+%CLSkelGlobalClass.DebugEntry('%Application (%Module): %Procedure (%ProcedureTemplate)') #<! Ultimate Debug ENTRY %ProcedureTemplate
  #ENDIF
  #IF(%TraceCode AND ~%CLSkelAppDisable AND %ShowLocalTemplates)
   #IF(ITEMS(%ActiveTemplate))
-%CLSkelClass.DebugLevel('----------------> LOCAL TEMPLATES')
+%CLSkelGlobalClass.DebugLevel('----------------> LOCAL TEMPLATES')
    #FOR(%ActiveTemplate)
-%CLSkelClass.DebugLevel('Active Templates: %[18]ActiveTemplateType %ActiveTemplate ')
+%CLSkelGlobalClass.DebugLevel('Active Templates: %[18]ActiveTemplateType %ActiveTemplate ')
    #ENDFOR
-%CLSkelClass.DebugLevel('---------------->')
+%CLSkelGlobalClass.DebugLevel('---------------->')
   #ENDIF
 ! === %ProcedureTemplate ===
  #ENDIF
@@ -984,7 +984,7 @@ UD_TRACE EQUATE(0)  #<! Ultimate Debug TRACE is OFF
   #COMMENT(90)
 ! === %ProcedureTemplate ===
 IF ReturnValue THEN
-  %CLSkelClass.DebugExit('%Application (%Module): %Procedure (%ProcedureTemplate) INIT Options from Globals') #<! Ultimate Debug EXITS %ProcedureTemplate
+  %CLSkelGlobalClass.DebugExit('%Application (%Module): %Procedure (%ProcedureTemplate) INIT Options from Globals') #<! Ultimate Debug EXITS %ProcedureTemplate
   RETURN ReturnValue
 END
 ! === %ProcedureTemplate ===
@@ -997,7 +997,7 @@ END
   #COMMENT(90)
 ! === %ProcedureTemplate ===
 IF ReturnValue THEN
-  %CLSkelClass.DebugExit('%Application (%Module): %Procedure (%ProcedureTemplate) KILL Short-Stop') #<! Ultimate Debug EXITS %ProcedureTemplate
+  %CLSkelGlobalClass.DebugExit('%Application (%Module): %Procedure (%ProcedureTemplate) KILL Short-Stop') #<! Ultimate Debug EXITS %ProcedureTemplate
   RETURN ReturnValue
 END
 ! === %ProcedureTemplate ===
@@ -1008,7 +1008,7 @@ END
 #AT(%WindowManagerMethodCodeSection,'Kill','(),BYTE'),PRIORITY(9995)
  #IF(%TraceCode AND ~%CLSkelAppDisable)
 ! === %ProcedureTemplate ===
-%CLSkelClass.DebugExit('%Application (%Module): %Procedure (%ProcedureTemplate)') #<! Ultimate Debug EXITS %ProcedureTemplate
+%CLSkelGlobalClass.DebugExit('%Application (%Module): %Procedure (%ProcedureTemplate)') #<! Ultimate Debug EXITS %ProcedureTemplate
 ! === %ProcedureTemplate ===
  #ENDIF
 #ENDAT
@@ -1036,7 +1036,7 @@ END
   #OROF('REPORT')
   #ELSE
 ! === %ProcedureTemplate ===
-%CLSkelClass.DebugEntry('%Application (%Module): %Procedure (%ProcedureTemplate)') #<! Ultimate Debug ENTRY %ProcedureTemplate
+%CLSkelGlobalClass.DebugEntry('%Application (%Module): %Procedure (%ProcedureTemplate)') #<! Ultimate Debug ENTRY %ProcedureTemplate
   #ENDCASE
 #ENDIF
  #IF(%TraceCode AND ~%CLSkelAppDisable AND %ShowLocalTemplates)
@@ -1049,11 +1049,11 @@ END
    #OROF('REPORT')
    #ELSE
 #! #EMBED(%DebugTraceProcedureBefore,'DebugTraceProcedure: Before TRACE statement')
-%CLSkelClass.Debug('----------------> LOCAL TEMPLATES')
+%CLSkelGlobalClass.Debug('----------------> LOCAL TEMPLATES')
    #FOR(%ActiveTemplate)
-%CLSkelClass.Debug('Active Templates: %[18]ActiveTemplateType %ActiveTemplate ')
+%CLSkelGlobalClass.Debug('Active Templates: %[18]ActiveTemplateType %ActiveTemplate ')
    #ENDFOR
-%CLSkelClass.Debug('---------------->')
+%CLSkelGlobalClass.Debug('---------------->')
 ! === %ProcedureTemplate ===
    #ENDCASE
   #ENDIF
@@ -1063,16 +1063,16 @@ END
 #!---------------------------------------------------------------------
  #IF(%TraceCode AND ~%CLSkelAppDisable)
 ! === %ProcedureTemplate ===
-%CLSkelClass.DebugEntry('%Application (%Module): %Procedure (%ProcedureTemplate)') #<! Ultimate Debug ENTRY %ProcedureTemplate
+%CLSkelGlobalClass.DebugEntry('%Application (%Module): %Procedure (%ProcedureTemplate)') #<! Ultimate Debug ENTRY %ProcedureTemplate
  #ENDIF
  #IF(%TraceCode AND ~%CLSkelAppDisable AND %ShowLocalTemplates)
   #IF(ITEMS(%ActiveTemplate))
 #! #EMBED(%DebugTraceProcedureBefore,'DebugTraceProcedure: Before TRACE statement')
-%CLSkelClass.Debug('----------------> LOCAL TEMPLATES')
+%CLSkelGlobalClass.Debug('----------------> LOCAL TEMPLATES')
    #FOR(%ActiveTemplate)
-%CLSkelClass.Debug('Active Templates: %[18]ActiveTemplateType %ActiveTemplate ')
+%CLSkelGlobalClass.Debug('Active Templates: %[18]ActiveTemplateType %ActiveTemplate ')
    #ENDFOR
-%CLSkelClass.Debug('---------------->')
+%CLSkelGlobalClass.Debug('---------------->')
 ! === %ProcedureTemplate ===
   #ENDIF
  #ENDIF
@@ -1094,7 +1094,7 @@ END
 ! === %ProcedureTemplate ===
   #IF(%ProcedureTemplate='Frame')
   #ENDIF
-%CLSkelClass.DebugExit('%Application (%Module): %Procedure (%ProcedureTemplate)') #<! Ultimate Debug EXITS %ProcedureTemplate
+%CLSkelGlobalClass.DebugExit('%Application (%Module): %Procedure (%ProcedureTemplate)') #<! Ultimate Debug EXITS %ProcedureTemplate
 ! === %ProcedureTemplate ===
   #ENDCASE
  #ENDIF
@@ -1105,7 +1105,7 @@ END
 ! === %ProcedureTemplate ===
   #IF(%ProcedureTemplate='Frame')
   #ENDIF
-%CLSkelClass.DebugExit('%Application (%Module): %Procedure (%ProcedureTemplate)') #<! Ultimate Debug EXITS %ProcedureTemplate
+%CLSkelGlobalClass.DebugExit('%Application (%Module): %Procedure (%ProcedureTemplate)') #<! Ultimate Debug EXITS %ProcedureTemplate
 ! === %ProcedureTemplate ===
  #ENDIF
 #END
@@ -1275,8 +1275,14 @@ COMPILE('!***TRACE***', UD_TRACE)
  #IF(%TraceCode AND %TraceEvents AND ~%CLSkelAppDisable)
 ! === %ProcedureTemplate === #<! %Application (%Module): %Procedure
 #! #EMBED(%DebugTraceTotalBefore,'DebugTraceTotal: Before TRACE statement')
-#! %CLSkelClass.Debug('TraceEvent: START: %Application (%Module): %Procedure (%ProcedureTemplate)')
-%CLSkelClass.DebugEvent(%TraceAnEvent) #<! Ultimate Debug EVENT Tracking
+#! %CLSkelGlobalClass.Debug('TraceEvent: START: %Application (%Module): %Procedure (%ProcedureTemplate)')
+#IF(%gGenGlobalObject=1)
+%CLSkelGlobalClass.DebugEvent(%TraceAnEvent) #<! Ultimate Debug EVENT Tracking
+#ENDIF
+!
+! If compile failed just above here, you need to enable the UD global class. 
+!
+
 #! %CLSkelClass.Debug('TraceEvent: ENDED: %Application (%Module): %Procedure (%ProcedureTemplate)')
 #! #EMBED(%DebugTraceTotalAfter,'DebugTraceTotal: After TRACE statement')
 ! === %ProcedureTemplate === #<! %Application (%Module): %Procedure
@@ -1300,7 +1306,12 @@ COMPILE('!***TRACE***', UD_TRACE)
 #IF(%CLSkelFamily = 'LEGACY')
  #IF(%TraceCode AND %TraceEvents AND ~%CLSkelAppDisable)
 ! === %ProcedureTemplate === #<! %Application (%Module): %Procedure
-%CLSkelClass.DebugEvent(%TraceAnEvent) #<! Ultimate Debug EVENT Tracking
+#IF(%gGenGlobalObject=1)
+%CLSkelGlobalClass.DebugEvent(%TraceAnEvent) #<! Ultimate Debug EVENT Tracking
+#ENDIF
+!
+! If compile failed just above here, you need to enable the UD global class. 
+!
 ! === %ProcedureTemplate === #<! %Application (%Module): %Procedure
  #ENDIF
 #ENDIF
@@ -1310,81 +1321,81 @@ COMPILE('!***TRACE***', UD_TRACE)
 #GROUP(%CheckTheFlags)
 ! === %ProcedureTemplate === #<! %Application (%Module): %Procedure
   #IF(%EventShowAll)
-%CLSkelClass.ShowAll        = TRUE
+%CLSkelGlobalClass.ShowAll        = TRUE
   #ELSE
-%CLSkelClass.ShowAll        = FALSE
+%CLSkelGlobalClass.ShowAll        = FALSE
   #ENDIF
 #!
   #IF(%EventShowField)
-%CLSkelClass.ShowField      = TRUE
+%CLSkelGlobalClass.ShowField      = TRUE
   #ELSE
-%CLSkelClass.ShowField      = FALSE
+%CLSkelGlobalClass.ShowField      = FALSE
   #ENDIF
 #! 
   #IF(%EventShowFocus)
-%CLSkelClass.ShowFocus      = TRUE
+%CLSkelGlobalClass.ShowFocus      = TRUE
   #ELSE
-%CLSkelClass.ShowFocus      = FALSE
+%CLSkelGlobalClass.ShowFocus      = FALSE
   #ENDIF
 #! 
   #IF(%EventShowSelected)
-%CLSkelClass.ShowSelected   = TRUE
+%CLSkelGlobalClass.ShowSelected   = TRUE
   #ELSE
-%CLSkelClass.ShowSelected   = FALSE
+%CLSkelGlobalClass.ShowSelected   = FALSE
   #ENDIF
 #! 
   #IF(%EventShowSelStart)
-%CLSkelClass.ShowSelStart   = TRUE
+%CLSkelGlobalClass.ShowSelStart   = TRUE
   #ELSE
-%CLSkelClass.ShowSelStart   = FALSE
+%CLSkelGlobalClass.ShowSelStart   = FALSE
   #ENDIF
 #! 
   #IF(%EventShowSelEnd)
-%CLSkelClass.ShowSelEnd     = TRUE
+%CLSkelGlobalClass.ShowSelEnd     = TRUE
   #ELSE
-%CLSkelClass.ShowSelEnd     = FALSE
+%CLSkelGlobalClass.ShowSelEnd     = FALSE
   #ENDIF
 #! 
   #IF(%EventShowKeyCode)
-%CLSkelClass.ShowKeyCode    = TRUE
+%CLSkelGlobalClass.ShowKeyCode    = TRUE
   #ELSE
-%CLSkelClass.ShowKeyCode    = FALSE
+%CLSkelGlobalClass.ShowKeyCode    = FALSE
   #ENDIF
 #!
   #IF(%EventShowError)
-%CLSkelClass.ShowError      = TRUE
+%CLSkelGlobalClass.ShowError      = TRUE
   #ELSE
-%CLSkelClass.ShowError      = FALSE
+%CLSkelGlobalClass.ShowError      = FALSE
   #ENDIF
 #!
   #IF(%EventShowThread)
-%CLSkelClass.ShowThread     = TRUE
+%CLSkelGlobalClass.ShowThread     = TRUE
   #ELSE
-%CLSkelClass.ShowThread     = FALSE
+%CLSkelGlobalClass.ShowThread     = FALSE
   #ENDIF
 #!
   #IF(%EventShowContents)
-%CLSkelClass.ShowContents   = TRUE
+%CLSkelGlobalClass.ShowContents   = TRUE
   #ELSE
-%CLSkelClass.ShowContents   = FALSE
+%CLSkelGlobalClass.ShowContents   = FALSE
   #ENDIF
 #!
   #IF(%EventShowContents)
-%CLSkelClass.ShowContents   = TRUE
+%CLSkelGlobalClass.ShowContents   = TRUE
   #ELSE
-%CLSkelClass.ShowContents   = FALSE
+%CLSkelGlobalClass.ShowContents   = FALSE
   #ENDIF
 #!
   #IF(%EventShowScreenText)
-%CLSkelClass.ShowScreenText = TRUE
+%CLSkelGlobalClass.ShowScreenText = TRUE
   #ELSE
-%CLSkelClass.ShowScreenText = FALSE
+%CLSkelGlobalClass.ShowScreenText = FALSE
   #ENDIF
 #!
   #IF(%EventShowAcceptAll)
-%CLSkelClass.ShowAcceptAll  = TRUE
+%CLSkelGlobalClass.ShowAcceptAll  = TRUE
   #ELSE
-%CLSkelClass.ShowAcceptAll  = FALSE
+%CLSkelGlobalClass.ShowAcceptAll  = FALSE
   #ENDIF
 ! === %ProcedureTemplate === #<! %Application (%Module): %Procedure
 #!

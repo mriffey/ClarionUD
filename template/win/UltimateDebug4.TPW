@@ -44,16 +44,16 @@
 #!---------------------------------------------------------------------
 #GROUP(%ShowTheProcedureInfo)   
 #IF (%Window <> '')
-    %CLSkelClass.ShowProcedureInfo('%Procedure',%CLSkelClass.SetApplicationName('%Application','%ProgramExtension'),%Window{PROP:Hlp},'%@D02@ProcedureDateCreated @ %@T03@ProcedureTimeCreated','%@D02@ProcedureDateChanged @ %@T03@ProcedureTimeChanged','%(FORMAT(TODAY(),@D02)) @ %(FORMAT(CLOCK(),@T03))')  
+    %CLSkelProcedureClass.ShowProcedureInfo('%Procedure',%CLSkelProcedureClass.SetApplicationName('%Application','%ProgramExtension'),%Window{PROP:Hlp},'%@D02@ProcedureDateCreated @ %@T03@ProcedureTimeCreated','%@D02@ProcedureDateChanged @ %@T03@ProcedureTimeChanged','%(FORMAT(TODAY(),@D02)) @ %(FORMAT(CLOCK(),@T03))')  
 #ELSE
-    %CLSkelClass.ShowProcedureInfo('%Procedure',%CLSkelClass.SetApplicationName('%Application','%ProgramExtension'),'None','%@D02@ProcedureDateCreated @ %@T03@ProcedureTimeCreated','%@D02@ProcedureDateChanged @ %@T03@ProcedureTimeChanged','%(FORMAT(TODAY(),@D02)) @ %(FORMAT(CLOCK(),@T03))')  
+    %CLSkelProcedureClass.ShowProcedureInfo('%Procedure',%CLSkelProcedureClass.SetApplicationName('%Application','%ProgramExtension'),'None','%@D02@ProcedureDateCreated @ %@T03@ProcedureTimeCreated','%@D02@ProcedureDateChanged @ %@T03@ProcedureTimeChanged','%(FORMAT(TODAY(),@D02)) @ %(FORMAT(CLOCK(),@T03))')  
 #ENDIF
 
 #GROUP(%ShowEnteringTheProcedure)
     udb_Settings.ModuleName = '%Module'
     udb_Settings.AppName    = '%Application.%ProgramExtension'
     udb_Settings.Modified   = '%@D02@ProcedureDateChanged @ %@T03@ProcedureTimeChanged'
-    %CLSkelClass.Init('%Procedure',udb_Settings)
+    %CLSkelProcedureClass.Init('%Procedure',udb_Settings)
  #!IF(~%CLSkelAppDisable AND ~%DisableProcedureDebug)
  #!   %CLSkelClass.DebugPrefix = '[OpenClose]'
  #!   %CLSkelClass.Debug('>>' & ',M %Module' & ',A ' & CLIP(%CLSkelClass.SetShortApplicationName('%Application','%ProgramExtension')) & ',L ' & '%@D02@ProcedureDateChanged @ %@T03@ProcedureTimeChanged') 
