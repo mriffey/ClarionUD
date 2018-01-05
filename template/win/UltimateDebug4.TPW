@@ -50,10 +50,12 @@
 #ENDIF
 
 #GROUP(%ShowEnteringTheProcedure)
+#IF(%gGenProcedureLevelObject = 1)
     udb_Settings.ModuleName = '%Module'
     udb_Settings.AppName    = '%Application.%ProgramExtension'
     udb_Settings.Modified   = '%@D02@ProcedureDateChanged @ %@T03@ProcedureTimeChanged'
     %CLSkelProcedureClass.Init('%Procedure',udb_Settings)
+#ENDIF
  #!IF(~%CLSkelAppDisable AND ~%DisableProcedureDebug)
  #!   %CLSkelClass.DebugPrefix = '[OpenClose]'
  #!   %CLSkelClass.Debug('>>' & ',M %Module' & ',A ' & CLIP(%CLSkelClass.SetShortApplicationName('%Application','%ProgramExtension')) & ',L ' & '%@D02@ProcedureDateChanged @ %@T03@ProcedureTimeChanged') 

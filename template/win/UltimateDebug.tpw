@@ -129,13 +129,13 @@
 #!
 #GROUP(%WndInit)
 #INSERT(%InsertedStart)
-%CLSkelObj.Init()
+%CLSkelObj.Init()  
 #INSERT(%InsertedEnd)
 #!
 #!
 #GROUP(%WndKill)
 #INSERT(%InsertedStart)
-%CLSkelObj.Kill()
+%CLSkelObj.Kill()  
 #INSERT(%InsertedEnd)
 #!
 #!

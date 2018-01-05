@@ -280,7 +280,7 @@ DebugABCGlobalInformation_%Application PROCEDURE()
     
   
  #IF(~%CLSkelAppDisable)
- #IF(~%gGenProcedureLevelObject)
+ #IF(%gGenProcedureLevelObject = 1)
   #IF(%gDumpTpl)
   %CLSkelProcedureClass.Debug('----------------> APPLICATION INFORMATION')
   %CLSkelProcedureClass.Debug('Information Generated on: '& FORMAT(TODAY(),@D010) & ' - ' & FORMAT(CLOCK(),@T04))
@@ -371,25 +371,25 @@ DebugABCGlobalVariables_%Application PROCEDURE()
 #ENDAT
 
 #AT(%LocalDataAfterClasses),WHERE(%ProcStillNeedsUltDB()),PRIORITY(100),DESCRIPTION('UltimateDebugger Object')
-#IF(~%gGenProcedureLevelObject)
+#IF(%gGenProcedureLevelObject = 1)
 #INSERT(%DeclareClass)
 #ENDIF
 #ENDAT
 !
 #AT(%DataSection),PRIORITY(100),WHERE(%ProcStillNeedsUltDB()),PRIORITY(100),DESCRIPTION('UltimateDebugger Object')
-#IF(~%gGenProcedureLevelObject)
+#IF(%gGenProcedureLevelObject = 1)
 #INSERT(%DeclareClass)
 #ENDIF
 #ENDAT
 !
 #AT(%DataSectionBeforeWindow),WHERE(%ProcStillNeedsUltDB()),PRIORITY(100),DESCRIPTION('UltimateDebugger Object')
-#IF(~%gGenProcedureLevelObject)
+#IF(%gGenProcedureLevelObject = 1)
 #INSERT(%DeclareClass)
 #ENDIF
 #ENDAT
 !
 #AT(%DeclarationSection),WHERE(%ProcStillNeedsUltDB()),PRIORITY(100),DESCRIPTION('UltimateDebugger Object')
-#IF(~%gGenProcedureLevelObject)
+#IF(%gGenProcedureLevelObject = 1)
 #INSERT(%DeclareClass)
 #ENDIF
 #ENDAT
@@ -509,7 +509,7 @@ END
 #!*****************************************************************************
 #GROUP(%DeclareClass,%ExternalAttr='')  
 #IF(~%CLSkelAppDisable)
-#IF(~%gGenProcedureLevelObject)
+#IF(%gGenProcedureLevelObject = 1)
 %[20]CLSkelProcedureClass UltimateDebug%ExternalAttr
 #ENDIF
 #ENDIF
