@@ -43,11 +43,14 @@
 
 #!---------------------------------------------------------------------
 #GROUP(%ShowTheProcedureInfo)   
+#IF(%gGenProcedureLevelObject = 1)
 #IF (%Window <> '')
+    
     %CLSkelProcedureClass.ShowProcedureInfo('%Procedure',%CLSkelProcedureClass.SetApplicationName('%Application','%ProgramExtension'),%Window{PROP:Hlp},'%@D02@ProcedureDateCreated @ %@T03@ProcedureTimeCreated','%@D02@ProcedureDateChanged @ %@T03@ProcedureTimeChanged','%(FORMAT(TODAY(),@D02)) @ %(FORMAT(CLOCK(),@T03))')  
 #ELSE
     %CLSkelProcedureClass.ShowProcedureInfo('%Procedure',%CLSkelProcedureClass.SetApplicationName('%Application','%ProgramExtension'),'None','%@D02@ProcedureDateCreated @ %@T03@ProcedureTimeCreated','%@D02@ProcedureDateChanged @ %@T03@ProcedureTimeChanged','%(FORMAT(TODAY(),@D02)) @ %(FORMAT(CLOCK(),@T03))')  
 #ENDIF
+#ENDIF 
 
 #GROUP(%ShowEnteringTheProcedure)
 #IF(%gGenProcedureLevelObject = 1)

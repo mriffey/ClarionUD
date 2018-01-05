@@ -233,6 +233,7 @@ Modified                            STRING(26)
 #AT(%ProgramSetup),WHERE(~%CLSkelAppDisable),PRIORITY(0001)
 #COMMENT(90)
 #IF(%ProgramExtension = 'EXE')
+#IF(%gGenGlobalObject=1)
   udb_Settings.DebugOff      =  %DebugOffVariable
   udb_Settings.DebugPrefix   =  '%CLDebugPrefix'
   udb_Settings.SaveToFile    =  %SaveToFileVariable
@@ -240,6 +241,7 @@ Modified                            STRING(26)
   udb_Settings.DebugNoCR     =  %DoNotSplitLines
   udb_Settings.LineWrap      =  %LineWrap
   %CLSkelGlobalClass.INIT('global',udb_settings)
+#ENDIF 
 #ENDIF
   #IF(%gDumpTpl AND %zDumpTpl)                                                #! Dump GLOBAL information - end
 DebugABCGlobalInformation_%Application()      #<! Dump GLOBAL information
@@ -270,13 +272,14 @@ DebugABCGlobalVariables_%Application PROCEDURE() #<! DEBUG Prototype
  
 !BOE: DEBUG Global
 DebugABCGlobalInformation_%Application PROCEDURE()
-#IF(~%gGenProcedureLevelObject)
+#IF(%gGenProcedureLevelObject = 1)
 #INSERT(%DeclareClass)
 #ENDIF
                      
   CODE
-  
+#IF(%gGenProcedureLevelObject = 1)  
   %CLSkelProcedureClass.Init('DebugABCGlobalInformation_%Application',udb_Settings)
+#ENDIF 
     
   
  #IF(~%CLSkelAppDisable)
@@ -316,14 +319,17 @@ DebugABCGlobalInformation_%Application PROCEDURE()
   RETURN
 
 DebugABCGlobalVariables_%Application PROCEDURE()
-
+#IF(%gGenProcedureLevelObject = 1)
 #INSERT(%DeclareClass)
-
+#ENDIF 
   CODE
-  
+
+#IF(%gGenProcedureLevelObject = 1)  
   %CLSkelProcedureClass.Init('DebugABCGlobalVariables_%Application',udb_Settings)
+#ENDIF 
   
  #IF(~%CLSkelAppDisable)
+ #IF(%gGenProcedureLevelObject = 1)
   #IF(%gDumpVar)
     #DECLARE (%Prefix)
     #DECLARE (%VarName)
@@ -363,6 +369,7 @@ DebugABCGlobalVariables_%Application PROCEDURE()
       #ENDIF
     #ENDFOR
   %CLSkelProcedureClass.Debug('---------------->')
+  #ENDIF 
   #ENDIF
  #ENDIF
   RETURN
